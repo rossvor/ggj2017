@@ -241,7 +241,7 @@ public class MySquidGame extends ApplicationAdapter {
                     case 'W':
                     {
                         //-1 is up on the screen
-                        move(0, -1);
+                        move(0, -2);
                         break;
                     }
                     case SquidInput.DOWN_ARROW:
