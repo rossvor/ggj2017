@@ -79,15 +79,18 @@ public class MySquidGame extends ApplicationAdapter {
     private int langIndex = 0;
     private String NextMap ="Map0.csv";
     private MapLoader MapLoad;
+    private ArrayList<String> bottomText;
     @Override
     public void create () {
     	playerEntity = new PlayerCharacterEntity(10,10);
     	creatureEntity = new CharacterEntity(10,10);
-    	
-    	
-    	
-    	
-    	
+    	bottomText = new ArrayList<String>(6);
+    	bottomText.add("Line 1");
+    	bottomText.add("Line 2");
+    	bottomText.add("Line 3");
+    	bottomText.add("Line 4");
+    	bottomText.add("Line 5");
+    	bottomText.add("Line 6");
     	
         //These variables, corresponding to the screen's width and height in cells and a cell's width and height in
         //pixels, must match the size you specified in the launcher for input to behave.
@@ -509,7 +512,8 @@ public class MySquidGame extends ApplicationAdapter {
         display.putString(gridWidth, 12, diff, 0, 1);
         
         for (int i = 0; i < 6; i++) {
-            display.putString(1, gridHeight + i + 1, lang[(langIndex + i) % lang.length], 0, 1);
+            display.putString(1, gridHeight + i + 1,bottomText.get(i),0,1);
+            System.out.println(bottomText.get(0));
         }
         //display.putString(1, gridHeight + 1,MapLoad.getDescription(),0,1);
     }
@@ -591,6 +595,11 @@ public class MySquidGame extends ApplicationAdapter {
     	{
     		System.out.println("You are hit");
     		playerEntity.setBP(playerEntity.getBP()-1);
+    		if (bottomText.get(5)!=null)
+    		{
+    			bottomText.remove(0);
+    		}
+    		bottomText.add("You are hit!");
     	}
     	if (playerEntity.getBP()<=0)
     	{
@@ -601,5 +610,11 @@ public class MySquidGame extends ApplicationAdapter {
     public void GameOver()
     {
     	System.out.println("You died, the Wave collapses, everything is terrible forever");
+    	if (bottomText.get(5)!=null)
+		{
+			bottomText.remove(0);
+		}
+		bottomText.add("You died, the Wave collapses, everything is terrible forever");
+		
     }
 }

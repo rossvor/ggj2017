@@ -6,10 +6,20 @@ import squidpony.squidmath.Coord;
 
 public class PlayerCharacterEntity {
 	private Wave waveSignature;
-	private int BP,GP;
+	private int karma,BP;
 	private Coord position;
 	private String name;
 	private String description;
+	
+	public void setKarma(int Karma)
+	{
+		karma = Karma;
+	}
+	
+	public int getKarma()
+	{
+		return karma;
+	}
 	
 	public void setBP(int bp)
 	{
@@ -19,16 +29,6 @@ public class PlayerCharacterEntity {
 	public int getBP()
 	{
 		return BP;
-	}
-	
-	public void setGP(int gp)
-	{
-		GP = gp;
-	}
-	
-	public int getGP()
-	{
-		return GP;
 	}
 	
 	public void setPosition(Coord pos)
@@ -70,11 +70,11 @@ public class PlayerCharacterEntity {
 		setHP(Integer.parseInt(dataArr[2]));
 		setPosition(Coord.get(Integer.parseInt(dataArr[3]), Integer.parseInt(dataArr[4])));
 	}*/
-	public PlayerCharacterEntity(int GP, int BP)
+	public PlayerCharacterEntity(int Karma, int BP)
 	{
 		//setName(dataArr[0]);
 		//setDescription(dataArr[1]);
-		setGP(GP);
+		setKarma(Karma);
 		setBP(BP);
 		//setPosition(Coord.get(Integer.parseInt(dataArr[3]), Integer.parseInt(dataArr[4])));
 	}
