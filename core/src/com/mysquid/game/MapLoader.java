@@ -42,13 +42,13 @@ public char[][] LoadMap(FileHandle MapFile)
 				if (map[col][row]=='@')
 				{
 					PlayerStart = Coord.get(col, row);
-					System.out.println("PlayerStart "+col+" "+row);
+					//System.out.println("PlayerStart "+col+" "+row);
 					map[col][row]='.';
 				}else
 					if (map[col][row]=='C')
 					{
 						CreatureStart = Coord.get(col, row);
-						System.out.println("PlayerStart "+col+" "+row);
+						//System.out.println("PlayerStart "+col+" "+row);
 						map[col][row]='.';
 					}
 			}

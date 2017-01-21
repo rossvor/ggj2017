@@ -68,10 +68,10 @@ public class MySquidGame extends ApplicationAdapter {
     private SquidInput input;
     private Color bgColor;
     private Stage stage;
-    private DijkstraMap playerToCursor;
-    private Coord cursor, player;
-    private ArrayList<Coord> toCursor;
-    private ArrayList<Coord> awaitedMoves;
+    private DijkstraMap playerToCursor,creatureToPlayer;
+    private Coord cursor, player, creature;
+    private ArrayList<Coord> toCursor,ToPlayerCreature;
+    private ArrayList<Coord> awaitedMoves,awaitedMovesCreature;
     private float secondsWithoutMoves;
     private String[] lang;
     private int langIndex = 0;
@@ -180,13 +180,15 @@ public class MySquidGame extends ApplicationAdapter {
         //REPLACING random placement with specific placement
         //player = dungeonGen.utility.randomCell(placement);
         player = MapLoad.getPlayerStart();
-        
+        creature = MapLoad.getCreatureStart();
         
         //This is used to allow clicks or taps to take the player to the desired area.
         toCursor = new ArrayList<Coord>(100);
         awaitedMoves = new ArrayList<Coord>(100);
+        awaitedMovesCreature = new ArrayList<Coord>(100);
         //DijkstraMap is the pathfinding swiss-army knife we use here to find a path to the latest cursor position.
         playerToCursor = new DijkstraMap(decoDungeon, DijkstraMap.Measurement.MANHATTAN);
+        creatureToPlayer = new DijkstraMap(decoDungeon, DijkstraMap.Measurement.MANHATTAN);
         bgColor = SColor.DARK_SLATE_GRAY;
         // DungeonUtility provides various ways to get default colors or other information from a dungeon char 2D array.
         colorIndices = DungeonUtility.generatePaletteIndices(decoDungeon);
@@ -432,12 +434,32 @@ public class MySquidGame extends ApplicationAdapter {
     private void move(int xmod, int ymod) {
         int newX = player.x + xmod, newY = player.y + ymod;
         if (newX >= 0 && newY >= 0 && newX < gridWidth && newY < gridHeight
-                && bareDungeon[newX][newY] != '#')
+                && bareDungeon[newX][newY] != '#'
+                && Coord.get(newX, newY)!=creature)
         {
             player = player.translate(xmod, ymod);
         }
         // loops through the text snippets displayed whenever the player moves
-        langIndex = (langIndex + 1) % lang.length;
+        //langIndex = (langIndex + 1) % lang.length;
+        
+        //Creature Turn
+        ToPlayerCreature = creatureToPlayer.findPath(100, null, null, creature, player);
+        
+        awaitedMovesCreature = new ArrayList<Coord>(ToPlayerCreature);
+        if (awaitedMovesCreature.size()>0)
+        {
+        	Coord mC = awaitedMovesCreature.remove(0);
+        	if (mC != player)
+        	{
+        		creature = mC;
+        	}
+        }
+        //int newXC = creature.x + mC.x, newYC = creature.y + mC.y;
+        //if (newXC >= 0 && newYC >= 0 && newXC < gridWidth && newYC < gridHeight
+        //        && bareDungeon[newXC][newYC] != '#')
+        //{
+        //	creature = creature.translate(mC.x-creature.x,mC.y-creature.y);
+        //}
     }
 
     /**
@@ -457,6 +479,8 @@ public class MySquidGame extends ApplicationAdapter {
         }
         //places the player as an '@' at his position in orange (6 is an index into SColor.LIMITED_PALETTE).
         display.put(player.x, player.y, '@', 6);
+        //System.out.println(creature.x+" "+creature.y);
+        display.put(creature.x, creature.y, 'C', 1);
         // for clarity, you could replace the above line with the uncommented line below
         //display.put(player.x, player.y, '@', SColor.INTERNATIONAL_ORANGE);
         // since this is what 6 refers to, a color constant in a palette where 6 refers to this shade of orange.
@@ -548,6 +572,8 @@ public class MySquidGame extends ApplicationAdapter {
         bareDungeon = decoDungeon;
         lineDungeon = DungeonUtility.hashesToLines(decoDungeon);
         player = MapLoad.getPlayerStart();
+        creature = MapLoad.getCreatureStart();
         playerToCursor = new DijkstraMap(decoDungeon, DijkstraMap.Measurement.MANHATTAN);
+        creatureToPlayer = new DijkstraMap(decoDungeon, DijkstraMap.Measurement.MANHATTAN);
     }
 }
