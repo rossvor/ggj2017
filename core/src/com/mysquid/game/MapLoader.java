@@ -73,4 +73,8 @@ public Coord getCreatureStart()
 	return CreatureStart;
 }
 
+public String getDescription()
+{
+	return description;
+}
 }
