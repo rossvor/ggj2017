@@ -8,7 +8,6 @@ public class Wave {
 	
 	public float[] waveValues;
 	
-	
 	public Wave () {
 		
 		int xValueCount = 30;
@@ -67,6 +66,15 @@ public class Wave {
 			waveValues[i] = waveValues[i] - (diff * intensity);	
 			
 		}
+		
+	}
+	
+	public float getDifference(Wave other) {
+		float diff = 0.f;
+		for (int i=0; i<waveValues.length;i++) {
+			diff += Math.abs(waveValues[i] - other.waveValues[i]);
+		}
+		return diff;
 		
 	}
 	

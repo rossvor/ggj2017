@@ -49,10 +49,11 @@ public class MySquidGame extends ApplicationAdapter {
     private RNG rng;
     private SquidLayers display;
     private DungeonGenerator dungeonGen;
-    private char[][] decoDungeon, bareDungeon, lineDungeon, spaces, wv;
+    private char[][] decoDungeon, bareDungeon, lineDungeon, spaces, wv, realmDisplay;
     private int[][] colorIndices, bgColorIndices, languageBG, languageFG, wvBG, wvFG;
     
     private Wave mWave;
+    private Wave realmWave;
     
     private List<Wave> sigilWaves;
     /** In number of cells */
@@ -216,7 +217,7 @@ public class MySquidGame extends ApplicationAdapter {
         		0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f
         };
         
-        mWave = new Wave(waveValues);
+        mWave = new Wave();
         
         sigilWaves = new ArrayList();
         float[] sigilWaveValues = {
@@ -234,6 +235,15 @@ public class MySquidGame extends ApplicationAdapter {
         };
         sigilWaves.add(new Wave(sigil2WaveValues));
         
+        
+        float[] realmValues = {
+        		0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f,
+        		1f,0.9f,0.8f,0.7f,0.6f,0.5f,0.4f,0.3f,0.2f,0.1f,
+        		0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f
+        };
+        
+        realmWave = new Wave(realmValues);
+        realmDisplay = realmWave.getTextRepresentation(waveHeight, 30);
         
         wv = mWave.getTextRepresentation(waveHeight, 30);
         wvBG = GwtCompatibility.fill2D(1, 30, waveHeight);
@@ -459,7 +469,14 @@ public class MySquidGame extends ApplicationAdapter {
         display.put(0, gridHeight, spaces, languageFG, languageBG);
         
         // put the enemy wave
-        display.put(gridWidth, 0, wv, wvFG, wvBG);
+        display.put(gridWidth, 0, realmDisplay, wvFG, wvBG);
+        
+     // put the realm wave
+        display.put(gridWidth, 13, wv, wvFG, wvBG);
+        
+        float difference = mWave.getDifference(realmWave);
+        String diff = "Diff: " + difference;
+        display.putString(gridWidth, 12, diff, 0, 1);
         
         for (int i = 0; i < 6; i++) {
             display.putString(1, gridHeight + i + 1, lang[(langIndex + i) % lang.length], 0, 1);
