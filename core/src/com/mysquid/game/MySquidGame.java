@@ -179,7 +179,7 @@ public class MySquidGame extends ApplicationAdapter {
         
         //REPLACING random placement with specific placement
         //player = dungeonGen.utility.randomCell(placement);
-        player = Coord.get(1, 1);
+        player = MapLoad.getPlayerStart();
         
         
         //This is used to allow clicks or taps to take the player to the desired area.
@@ -547,7 +547,7 @@ public class MySquidGame extends ApplicationAdapter {
         NextMap = MapLoad.getNextMap();
         bareDungeon = decoDungeon;
         lineDungeon = DungeonUtility.hashesToLines(decoDungeon);
-        player = Coord.get(1, 1);
+        player = MapLoad.getPlayerStart();
         playerToCursor = new DijkstraMap(decoDungeon, DijkstraMap.Measurement.MANHATTAN);
     }
 }
