@@ -8,7 +8,7 @@ import com.mysquid.game.MySquidGame;
 
 public class DesktopLauncher {
 	public static void main (String[] args) {
-    	LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
    		config.width = (80 + 30) * 11;
     	config.height = (24 + 8) * 22;
