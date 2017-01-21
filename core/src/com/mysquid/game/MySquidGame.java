@@ -4,11 +4,14 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Files.FileType;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
 import squidpony.FakeLanguageGen;
 import squidpony.GwtCompatibility;
 import squidpony.squidai.DijkstraMap;
@@ -66,6 +69,12 @@ public class MySquidGame extends ApplicationAdapter {
     private int langIndex = 0;
     @Override
     public void create () {
+    	//test test testing files
+    	
+    	
+    	
+    	
+    	
         //These variables, corresponding to the screen's width and height in cells and a cell's width and height in
         //pixels, must match the size you specified in the launcher for input to behave.
         //This is one of the more common places a mistake can happen.
@@ -107,6 +116,7 @@ public class MySquidGame extends ApplicationAdapter {
         // also some TextCellFactory objects for distance field fonts; either one can be passed to this constructor.
         // the font will try to load Inconsolata-LGC-Square as a bitmap font with a distance field effect.
         display = new SquidLayers((gridWidth + 30), gridHeight + 8, cellWidth, cellHeight, DefaultResources.getStretchableFont());
+
         // a bit of a hack to increase the text height slightly without changing the size of the cells they're in.
         // this causes a tiny bit of overlap between cells, which gets rid of an annoying gap between vertical lines.
         // if you use '#' for walls instead of box drawing chars, you don't need this.
@@ -127,7 +137,12 @@ public class MySquidGame extends ApplicationAdapter {
         //dungeonGen.addWater(15);
         //decoDungeon is given the dungeon with any decorations we specified. (Here, we didn't, unless you chose to add
         //water to the dungeon. In that case, decoDungeon will have different contents than bareDungeon, next.)
-        decoDungeon = dungeonGen.generate();
+        
+        //REPLACING decoDungeon generated with decoDungeon loaded from LoadMap
+        //decoDungeon = dungeonGen.generate();
+        MapLoader MapLoad =  new MapLoader();
+        decoDungeon = MapLoad.LoadMap(Gdx.files.internal("Map0.csv"));
+        
         //There are lots of options for dungeon generation in SquidLib; you can pass a TilesetType enum to generate()
         //as shown on the following lines to change the style of dungeon generated from ruined areas, which are made
         //when no argument is passed to generate or when TilesetType.DEFAULT_DUNGEON is, to caves or other styles.
@@ -135,7 +150,11 @@ public class MySquidGame extends ApplicationAdapter {
         //decoDungeon = dungeonGen.generate(TilesetType.ROUND_ROOMS_DIAGONAL_CORRIDORS); // generate large round rooms
 
         //getBareDungeon provides the simplest representation of the generated dungeon -- '#' for walls, '.' for floors.
-        bareDungeon = dungeonGen.getBareDungeon();
+       
+        //REPLACING bareDungeon generated with loaded
+        //bareDungeon = dungeonGen.getBareDungeon();
+        bareDungeon = decoDungeon;
+        
         //When we draw, we may want to use a nicer representation of walls. DungeonUtility has lots of useful methods
         //for modifying char[][] dungeon grids, and this one takes each '#' and replaces it with a box-drawing character.
         lineDungeon = DungeonUtility.hashesToLines(decoDungeon);
@@ -148,7 +167,12 @@ public class MySquidGame extends ApplicationAdapter {
         cursor = Coord.get(-1, -1);
         //player is, here, just a Coord that stores his position. In a real game, you would probably have a class for
         //creatures, and possibly a subclass for the player.
-        player = dungeonGen.utility.randomCell(placement);
+        
+        //REPLACING random placement with specific placement
+        //player = dungeonGen.utility.randomCell(placement);
+        player = Coord.get(1, 1);
+        
+        
         //This is used to allow clicks or taps to take the player to the desired area.
         toCursor = new ArrayList<Coord>(100);
         awaitedMoves = new ArrayList<Coord>(100);
