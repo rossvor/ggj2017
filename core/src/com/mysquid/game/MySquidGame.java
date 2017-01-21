@@ -74,6 +74,7 @@ public class MySquidGame extends ApplicationAdapter {
     private float secondsWithoutMoves;
     private String[] lang;
     private int langIndex = 0;
+    private String NextMap ="Map0.csv";
     @Override
     public void create () {
     	//test test testing files
@@ -148,8 +149,8 @@ public class MySquidGame extends ApplicationAdapter {
         //REPLACING decoDungeon generated with decoDungeon loaded from LoadMap
         //decoDungeon = dungeonGen.generate();
         MapLoader MapLoad =  new MapLoader();
-        decoDungeon = MapLoad.LoadMap(Gdx.files.internal("Map0.csv"));
-        
+        decoDungeon = MapLoad.LoadMap(Gdx.files.internal(NextMap));
+        NextMap = MapLoad.getNextMap();
         //There are lots of options for dungeon generation in SquidLib; you can pass a TilesetType enum to generate()
         //as shown on the following lines to change the style of dungeon generated from ruined areas, which are made
         //when no argument is passed to generate or when TilesetType.DEFAULT_DUNGEON is, to caves or other styles.
@@ -356,6 +357,9 @@ public class MySquidGame extends ApplicationAdapter {
                     case 'c':
                     	castSigil(2, 0.6f);
                     	break;
+                    case '/':
+                    	NewMap("Map1.csv");
+                    	break;
                 }
             }
         },
@@ -518,4 +522,15 @@ public class MySquidGame extends ApplicationAdapter {
         // about the changes to the screen as well.
 		input.getMouse().reinitialize((float) width / this.gridWidth, (float)height / (this.gridHeight + 8), this.gridWidth, this.gridHeight, 0, 0);
 	}
+    
+    public void NewMap(String mapName)
+    {
+    	MapLoader MapLoad =  new MapLoader();
+        decoDungeon = MapLoad.LoadMap(Gdx.files.internal(NextMap));
+        NextMap = MapLoad.getNextMap();
+        bareDungeon = decoDungeon;
+        lineDungeon = DungeonUtility.hashesToLines(decoDungeon);
+        player = Coord.get(1, 1);
+        playerToCursor = new DijkstraMap(decoDungeon, DijkstraMap.Measurement.MANHATTAN);
+    }
 }

@@ -5,8 +5,13 @@ import java.io.IOException;
 import com.badlogic.gdx.files.FileHandle;
 
 public class MapLoader {
+private String description;
+private String NextMap;
 
-
+public String getNextMap()
+{
+	return NextMap;
+}
 public char[][] LoadMap(FileHandle MapFile)
 {
 	char[][] map = new char[80][24];
@@ -19,12 +24,16 @@ public char[][] LoadMap(FileHandle MapFile)
 		
 		
 	BufferedReader in = MapFile.reader(2000);
+	
 	try {
+		description = in.readLine();
+		NextMap = in.readLine();
 		while ((data = in.readLine())!=null)
 		{
 			dataArr = data.split(",");
 			for (int col=0;col<=79;col++)
 			{
+				System.out.println(row+" "+col);
 				map[col][row] = dataArr[col].charAt(0);
 			}
 			row++;
