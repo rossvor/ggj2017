@@ -24,6 +24,8 @@ import squidpony.squidmath.RNG;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 
 /**
  * The main class of the game, constructed once in each of the platform-specific Launcher classes. Doesn't use any
@@ -49,6 +51,10 @@ public class MySquidGame extends ApplicationAdapter {
     private DungeonGenerator dungeonGen;
     private char[][] decoDungeon, bareDungeon, lineDungeon, spaces, wv;
     private int[][] colorIndices, bgColorIndices, languageBG, languageFG, wvBG, wvFG;
+    
+    private Wave mWave;
+    
+    private List<Wave> sigilWaves;
     /** In number of cells */
     private int gridWidth;
     /** In number of cells */
@@ -57,6 +63,7 @@ public class MySquidGame extends ApplicationAdapter {
     private int cellWidth;
     /** The pixel height of a cell */
     private int cellHeight;
+    private int waveHeight;
     private SquidInput input;
     private Color bgColor;
     private Stage stage;
@@ -194,7 +201,7 @@ public class MySquidGame extends ApplicationAdapter {
         languageBG = GwtCompatibility.fill2D(1, gridWidth, 8);
         languageFG = GwtCompatibility.fill2D(0, gridWidth, 8);
         
-        int waveHeight = 12;
+        waveHeight = 12;
         
         /*
         float[] waveValues = {
@@ -208,7 +215,25 @@ public class MySquidGame extends ApplicationAdapter {
         		0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f
         };
         
-        Wave mWave = new Wave(waveValues);
+        mWave = new Wave(waveValues);
+        
+        sigilWaves = new ArrayList();
+        float[] sigilWaveValues = {
+        		0f,0f,0f,-0.1f,-0.2f,-0.3f,-0.4f,-0.5f,-0.6f,-0.7f,
+        		-0.8f,-0.9f,-0.8f,-0.7f,-0.6f,0f,0f,0f,0f,0f,
+        		0f,0f,0f,0f,0f,0f,0f,0f,0f,0f
+        };
+        Wave sigilWave = new Wave(sigilWaveValues);        
+        sigilWaves.add(sigilWave);
+        
+        float[] sigil2WaveValues = {
+        		0f,0f,0f,0f,0f,0.2f,0.3f,0.4f,0.5f,0.5f,
+        		0.4f,0.3f,0.2f,0f,0f,0f,0f,0f,0f,0f,
+        		0f,0f,0f,0f,0f,0f,0f,0f,0f,0f
+        };
+        sigilWaves.add(new Wave(sigil2WaveValues));
+        
+        
         wv = mWave.getTextRepresentation(waveHeight, 30);
         wvBG = GwtCompatibility.fill2D(1, 30, waveHeight);
         wvFG = GwtCompatibility.fill2D(0, 30, waveHeight);
@@ -278,50 +303,59 @@ public class MySquidGame extends ApplicationAdapter {
                 switch (key)
                 {
                     case SquidInput.UP_ARROW:
-                    case 'k':
-                    case 'w':
-                    case 'K':
-                    case 'W':
                     {
                         //-1 is up on the screen
                         move(0, -1);
                         break;
                     }
                     case SquidInput.DOWN_ARROW:
-                    case 'j':
-                    case 's':
-                    case 'J':
-                    case 'S':
                     {
                         //+1 is down on the screen
                         move(0, 1);
                         break;
                     }
                     case SquidInput.LEFT_ARROW:
-                    case 'h':
-                    case 'a':
-                    case 'H':
-                    case 'A':
                     {
                         move(-1, 0);
                         break;
                     }
                     case SquidInput.RIGHT_ARROW:
-                    case 'l':
-                    case 'd':
-                    case 'L':
-                    case 'D':
                     {
                         move(1, 0);
                         break;
                     }
-                    case 'Q':
-                    case 'q':
                     case SquidInput.ESCAPE:
                     {
                         Gdx.app.exit();
                         break;
                     }
+                    case 'q':
+                    	castSigil(0, 0.2f);
+                    	break;
+                    case 'w':
+                    	castSigil(0, 0.4f);
+                    	break;
+                    case 'e':
+                    	castSigil(0, 0.6f);
+                    	break;
+                    case 'a':
+                    	castSigil(1, 0.2f);
+                    	break;
+                    case 's':
+                    	castSigil(1, 0.4f);
+                    	break;
+                    case 'd':
+                    	castSigil(1, 0.6f);
+                    	break;
+                    case 'z':
+                    	castSigil(2, 0.2f);
+                    	break;
+                    case 'x':
+                    	castSigil(2, 0.4f);
+                    	break;
+                    case 'c':
+                    	castSigil(2, 0.6f);
+                    	break;
                 }
             }
         },
@@ -427,6 +461,18 @@ public class MySquidGame extends ApplicationAdapter {
             display.putString(1, gridHeight + i + 1, lang[(langIndex + i) % lang.length], 0, 1);
         }
     }
+    
+    public void castSigil(int sigilIndex, float intensity) {
+    	
+
+    	if (sigilWaves.size() > sigilIndex) {
+        	mWave.applyWave(sigilWaves.get(sigilIndex), intensity);
+        	wv = mWave.getTextRepresentation(waveHeight, 30);    		
+    	}
+
+
+    }
+    
     @Override
     public void render () {
         // standard clear the background routine for libGDX

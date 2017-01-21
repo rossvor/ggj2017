@@ -6,7 +6,7 @@ import squidpony.GwtCompatibility;
 
 public class Wave {
 	
-	private float[] waveValues;
+	public float[] waveValues;
 	
 	
 	public Wave () {
@@ -37,7 +37,7 @@ public class Wave {
 	}
 	
 	private static int getYPos(float v, int height) {
-		System.out.println("v="+v);
+		//System.out.println("v="+v);
 		int a = Math.round(v * (height/2));
 		
 		int yIndex;
@@ -54,10 +54,24 @@ public class Wave {
 		return yIndex;		
 	}
 		
-	public void applyWave(Wave waveToApply) {
+	public void applyWave(Wave waveToApply, float intensity) {
 		
+		if (waveToApply.waveValues.length != waveValues.length) {
+			return;
+		}
 		
+		for (int i=0; i<waveValues.length;i++) {
+			
+			float diff = waveValues[i] - waveToApply.waveValues[i];
+			//waveValues[i] = clamp(waveValues[i] - (diff * intensity), -1f, 1f);
+			waveValues[i] = waveValues[i] - (diff * intensity);	
+			
+		}
 		
+	}
+	
+	public static float clamp(float val, float min, float max) {
+	    return Math.max(min, Math.min(max, val));
 	}
 
 }
