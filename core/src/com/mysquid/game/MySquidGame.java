@@ -44,8 +44,8 @@ public class MySquidGame extends ApplicationAdapter {
     private RNG rng;
     private SquidLayers display;
     private DungeonGenerator dungeonGen;
-    private char[][] decoDungeon, bareDungeon, lineDungeon, spaces;
-    private int[][] colorIndices, bgColorIndices, languageBG, languageFG;
+    private char[][] decoDungeon, bareDungeon, lineDungeon, spaces, wv;
+    private int[][] colorIndices, bgColorIndices, languageBG, languageFG, wvBG, wvFG;
     /** In number of cells */
     private int gridWidth;
     /** In number of cells */
@@ -94,7 +94,7 @@ public class MySquidGame extends ApplicationAdapter {
         //Some classes in SquidLib need access to a batch to render certain things, so it's a good idea to have one.
         batch = new SpriteBatch();
         //Here we make sure our Stage, which holds any text-based grids we make, uses our Batch.
-        stage = new Stage(new StretchViewport(gridWidth * cellWidth, (gridHeight + 8) * cellHeight), batch);
+        stage = new Stage(new StretchViewport((gridWidth + 30) * cellWidth, (gridHeight + 8) * cellHeight), batch);
 
         // display is a SquidLayers object, and that class has a very large number of similar methods for placing text
         // on a grid, with an optional background color and lightness modifier per cell. It also handles animations and
@@ -106,7 +106,7 @@ public class MySquidGame extends ApplicationAdapter {
         // layout of text in a cell, among other things. DefaultResources stores pre-configured BitmapFont objects but
         // also some TextCellFactory objects for distance field fonts; either one can be passed to this constructor.
         // the font will try to load Inconsolata-LGC-Square as a bitmap font with a distance field effect.
-        display = new SquidLayers(gridWidth, gridHeight + 8, cellWidth, cellHeight, DefaultResources.getStretchableFont());
+        display = new SquidLayers((gridWidth + 30), gridHeight + 8, cellWidth, cellHeight, DefaultResources.getStretchableFont());
         // a bit of a hack to increase the text height slightly without changing the size of the cells they're in.
         // this causes a tiny bit of overlap between cells, which gets rid of an annoying gap between vertical lines.
         // if you use '#' for walls instead of box drawing chars, you don't need this.
@@ -166,9 +166,28 @@ public class MySquidGame extends ApplicationAdapter {
         // So, you can think of the class more like "Gwt, and also Compatibility".
         // fill2D constructs a 2D array filled with one item. Other methods can insert a
         // 2D array into a differently-sized 2D array, or copy a 2D array of various types.
-        spaces = GwtCompatibility.fill2D(' ', gridWidth, 6);
-        languageBG = GwtCompatibility.fill2D(1, gridWidth, 6);
-        languageFG = GwtCompatibility.fill2D(0, gridWidth, 6);
+        spaces = GwtCompatibility.fill2D(' ', gridWidth, 8);
+        languageBG = GwtCompatibility.fill2D(1, gridWidth, 8);
+        languageFG = GwtCompatibility.fill2D(0, gridWidth, 8);
+        
+        int waveHeight = 12;
+        
+        /*
+        float[] waveValues = {
+        		-0.2f, 0f, 0f, 0.3f, 0.4f, 0.6f, 0.2f, 0f, -0.4f, -0.3f,
+        		-0.2f, 0f, 0f, 0.3f, 0.4f, 0.6f, 0.2f, 0f, -0.4f, -0.3f,
+        		-0.2f, 0f, 0f, 0.3f, 0.4f, 0.6f, 0.2f, 0f, -0.4f, -0.3f
+        };*/
+        float[] waveValues = {
+        		0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f,
+        		1f,0.9f,0.8f,0.7f,0.6f,0.5f,0.4f,0.3f,0.2f,0.1f,
+        		0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f
+        };
+        
+        Wave mWave = new Wave(waveValues);
+        wv = mWave.getTextRepresentation(waveHeight, 30);
+        wvBG = GwtCompatibility.fill2D(1, 30, waveHeight);
+        wvFG = GwtCompatibility.fill2D(0, 30, waveHeight);
 
         // this creates an array of sentences, where each imitates a different sort of language or mix of languages.
         // this serves to demonstrate the large amount of glyphs SquidLib supports.
@@ -375,9 +394,13 @@ public class MySquidGame extends ApplicationAdapter {
         // SColor extends Color, so you can use an SColor anywhere a Color is expected.
 
         // The arrays we produced in create() are used here to provide a blank area behind text
-        display.put(0, gridHeight + 1, spaces, languageFG, languageBG);
+        display.put(0, gridHeight, spaces, languageFG, languageBG);
+        
+        // put the enemy wave
+        display.put(gridWidth, 0, wv, wvFG, wvBG);
+        
         for (int i = 0; i < 6; i++) {
-            display.putString(2, gridHeight + i + 1, lang[(langIndex + i) % lang.length], 0, 1);
+            display.putString(1, gridHeight + i + 1, lang[(langIndex + i) % lang.length], 0, 1);
         }
     }
     @Override
