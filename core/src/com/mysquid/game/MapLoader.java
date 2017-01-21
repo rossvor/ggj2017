@@ -2,11 +2,15 @@ package com.mysquid.game;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import squidpony.squidmath.Coord;
+
 import com.badlogic.gdx.files.FileHandle;
 
 public class MapLoader {
 private String description;
 private String NextMap;
+private Coord PlayerStart;
+private Coord CreatureStart;
 
 public String getNextMap()
 {
@@ -35,6 +39,18 @@ public char[][] LoadMap(FileHandle MapFile)
 			{
 				System.out.println(row+" "+col);
 				map[col][row] = dataArr[col].charAt(0);
+				if (map[col][row]=='@')
+				{
+					PlayerStart = Coord.get(col, row);
+					System.out.println("PlayerStart "+col+" "+row);
+					map[col][row]='.';
+				}else
+					if (map[col][row]=='C')
+					{
+						CreatureStart = Coord.get(col, row);
+						System.out.println("PlayerStart "+col+" "+row);
+						map[col][row]='.';
+					}
 			}
 			row++;
 		}
@@ -47,5 +63,14 @@ public char[][] LoadMap(FileHandle MapFile)
 	
 }
 
+public Coord getPlayerStart()
+{
+	return PlayerStart;
+}
+
+public Coord getCreatureStart()
+{
+	return CreatureStart;
+}
 
 }
