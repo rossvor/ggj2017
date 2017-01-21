@@ -358,7 +358,7 @@ public class MySquidGame extends ApplicationAdapter {
                     	castSigil(2, 0.6f);
                     	break;
                     case '/':
-                    	NewMap("Map1.csv");
+                    	NewMap(NextMap);
                     	break;
                 }
             }
@@ -526,7 +526,7 @@ public class MySquidGame extends ApplicationAdapter {
     public void NewMap(String mapName)
     {
     	MapLoader MapLoad =  new MapLoader();
-        decoDungeon = MapLoad.LoadMap(Gdx.files.internal(NextMap));
+        decoDungeon = MapLoad.LoadMap(Gdx.files.internal(mapName));
         NextMap = MapLoad.getNextMap();
         bareDungeon = decoDungeon;
         lineDungeon = DungeonUtility.hashesToLines(decoDungeon);
