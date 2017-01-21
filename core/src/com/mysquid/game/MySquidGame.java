@@ -372,6 +372,9 @@ public class MySquidGame extends ApplicationAdapter {
                     case 'c':
                     	castSigil(2, 0.6f);
                     	break;
+                    case 'v':
+                    	damageCreature();
+                    	break;
                     case '/':
                     	NewMap(NextMap);
                     	break;
@@ -554,6 +557,30 @@ public class MySquidGame extends ApplicationAdapter {
         //there shouldn't be a problem from calling act(), but
         //you can comment out the next line to test if input has problems.
         stage.act();
+    }
+    
+    public void damageCreature() {
+    	System.out.println("Spell casted");
+    	float diff = mWave.getDifference(realmWave);
+    	
+    	if (diff > 13) {
+    		
+    		float damage = diff * 0.3f;
+    		creatureEntity.setBP(creatureEntity.getBP() - damage);
+    	}
+    	else {
+    		float damage = 10 - (diff * 0.3f);
+    		System.out.println("GP dmg" + damage);
+    		creatureEntity.setGP(creatureEntity.getGP() - damage);    		
+    	}
+    	
+    	System.out.println("BP: " + creatureEntity.getBP() + "; GP: " + creatureEntity.getGP());
+    	
+    	if (creatureEntity.getBP()< 0)
+    		System.out.println("Creature is dead!");
+    	if (creatureEntity.getGP()< 0)
+    		System.out.println("Creature is saved!");
+    	
     }
 
     @Override
