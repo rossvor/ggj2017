@@ -70,16 +70,18 @@ public class MySquidGame extends ApplicationAdapter {
     private Stage stage;
     private DijkstraMap playerToCursor,creatureToPlayer;
     private Coord cursor, player, creature;
-    private CharacterEntity playerEntity,creatureEntity;
+    PlayerCharacterEntity playerEntity;
+	private CharacterEntity creatureEntity;
     private ArrayList<Coord> toCursor,ToPlayerCreature;
     private ArrayList<Coord> awaitedMoves,awaitedMovesCreature;
     private float secondsWithoutMoves;
     private String[] lang;
     private int langIndex = 0;
     private String NextMap ="Map0.csv";
+    private MapLoader MapLoad;
     @Override
     public void create () {
-    	playerEntity = new CharacterEntity(10,10);
+    	playerEntity = new PlayerCharacterEntity(10,10);
     	creatureEntity = new CharacterEntity(10,10);
     	
     	
@@ -152,7 +154,7 @@ public class MySquidGame extends ApplicationAdapter {
         
         //REPLACING decoDungeon generated with decoDungeon loaded from LoadMap
         //decoDungeon = dungeonGen.generate();
-        MapLoader MapLoad =  new MapLoader();
+        MapLoad =  new MapLoader();
         decoDungeon = MapLoad.LoadMap(Gdx.files.internal(NextMap));
         NextMap = MapLoad.getNextMap();
         //There are lots of options for dungeon generation in SquidLib; you can pass a TilesetType enum to generate()
@@ -262,7 +264,7 @@ public class MySquidGame extends ApplicationAdapter {
         // 0.0 to 1.0 of putting between-word punctuation after a word, and lastly the max characters per sentence.
         // It is recommended that you don't increase the max characters per sentence much more, since it's already very
         // close to touching the edges of the message box it's in.
-        lang = new String[]
+       /* lang = new String[]
                 {
                         FakeLanguageGen.ENGLISH.sentence(5, 10, new String[]{",", ",", ",", ";"},
                                 new String[]{".", ".", ".", "!", "?", "..."}, 0.17, gridWidth - 4),
@@ -299,7 +301,7 @@ public class MySquidGame extends ApplicationAdapter {
                                 .mix(FakeLanguageGen.FANCY_FANTASY_NAME, 0.12).mix(FakeLanguageGen.LOVECRAFT, 0.1)
                                 .sentence(5, 10, new String[]{",", ",", ",", ";"},
                                 new String[]{".", ".", ".", "!", "?", "..."}, 0.2, gridWidth - 4),
-                };
+                };*/
 
 
         // this is a big one.
@@ -435,6 +437,7 @@ public class MySquidGame extends ApplicationAdapter {
      * @param ymod
      */
     private void move(int xmod, int ymod) {
+    	AmIHit();
         int newX = player.x + xmod, newY = player.y + ymod;
         if (newX >= 0 && newY >= 0 && newX < gridWidth && newY < gridHeight
                 && bareDungeon[newX][newY] != '#'
@@ -508,6 +511,7 @@ public class MySquidGame extends ApplicationAdapter {
         for (int i = 0; i < 6; i++) {
             display.putString(1, gridHeight + i + 1, lang[(langIndex + i) % lang.length], 0, 1);
         }
+        //display.putString(1, gridHeight + 1,MapLoad.getDescription(),0,1);
     }
     
     public void castSigil(int sigilIndex, float intensity) {
@@ -569,7 +573,7 @@ public class MySquidGame extends ApplicationAdapter {
     
     public void NewMap(String mapName)
     {
-    	MapLoader MapLoad =  new MapLoader();
+    	MapLoad =  new MapLoader();
         decoDungeon = MapLoad.LoadMap(Gdx.files.internal(mapName));
         NextMap = MapLoad.getNextMap();
         bareDungeon = decoDungeon;
@@ -578,5 +582,24 @@ public class MySquidGame extends ApplicationAdapter {
         creature = MapLoad.getCreatureStart();
         playerToCursor = new DijkstraMap(decoDungeon, DijkstraMap.Measurement.MANHATTAN);
         creatureToPlayer = new DijkstraMap(decoDungeon, DijkstraMap.Measurement.MANHATTAN);
+        creatureEntity = new CharacterEntity(10,10);
+    }
+    
+    public void AmIHit()
+    {
+    	if (player.isAdjacent(creature))
+    	{
+    		System.out.println("You are hit");
+    		playerEntity.setBP(playerEntity.getBP()-1);
+    	}
+    	if (playerEntity.getBP()<=0)
+    	{
+    		GameOver();
+    	}
+    }
+    
+    public void GameOver()
+    {
+    	System.out.println("You died, the Wave collapses, everything is terrible forever");
     }
 }
