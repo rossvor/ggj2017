@@ -11,11 +11,27 @@ private String description;
 private String NextMap;
 private Coord PlayerStart;
 private Coord CreatureStart;
+private String waveValuesString;
 
 public String getNextMap()
 {
 	return NextMap;
 }
+
+public Wave getRealmWave() {
+	
+	String[] values = waveValuesString.split(",");
+	float[] waveValues = new float[30]; 
+	
+	for (int i=0; i<values.length; i++){ 
+		waveValues[i] = Float.parseFloat(values[i]);
+	}
+	Wave wave = new Wave(waveValues);
+
+	return wave;
+	
+}
+
 public char[][] LoadMap(FileHandle MapFile)
 {
 	char[][] map = new char[80][24];
@@ -32,6 +48,7 @@ public char[][] LoadMap(FileHandle MapFile)
 	try {
 		description = in.readLine();
 		NextMap = in.readLine();
+		waveValuesString = in.readLine();
 		while ((data = in.readLine())!=null)
 		{
 			dataArr = data.split(",");

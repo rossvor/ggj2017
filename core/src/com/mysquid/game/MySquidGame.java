@@ -249,7 +249,7 @@ public class MySquidGame extends ApplicationAdapter {
         		0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f
         };
         
-        realmWave = new Wave(realmValues);
+        realmWave = MapLoad.getRealmWave();
         realmDisplay = realmWave.getTextRepresentation(waveHeight, 30);
         
         wv = mWave.getTextRepresentation(waveHeight, 30);
@@ -512,7 +512,7 @@ public class MySquidGame extends ApplicationAdapter {
         display.putString(gridWidth, 12, diff, 0, 1);
         
         for (int i = 0; i < 6; i++) {
-            display.putString(1, gridHeight + i + 1, lang[(langIndex + i) % lang.length], 0, 1);
+           // display.putString(1, gridHeight + i + 1, lang[(langIndex + i) % lang.length], 0, 1);
         }
         //display.putString(1, gridHeight + 1,MapLoad.getDescription(),0,1);
     }
