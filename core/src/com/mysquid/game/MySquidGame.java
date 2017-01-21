@@ -70,6 +70,7 @@ public class MySquidGame extends ApplicationAdapter {
     private Stage stage;
     private DijkstraMap playerToCursor,creatureToPlayer;
     private Coord cursor, player, creature;
+    private CharacterEntity playerEntity,creatureEntity;
     private ArrayList<Coord> toCursor,ToPlayerCreature;
     private ArrayList<Coord> awaitedMoves,awaitedMovesCreature;
     private float secondsWithoutMoves;
@@ -78,7 +79,9 @@ public class MySquidGame extends ApplicationAdapter {
     private String NextMap ="Map0.csv";
     @Override
     public void create () {
-    	//test test testing files
+    	playerEntity = new CharacterEntity(10,10);
+    	creatureEntity = new CharacterEntity(10,10);
+    	
     	
     	
     	

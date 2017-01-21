@@ -6,19 +6,29 @@ import squidpony.squidmath.Coord;
 
 public class CharacterEntity {
 	private Wave waveSignature;
-	private int HP;
+	private int BP,GP;
 	private Coord position;
 	private String name;
 	private String description;
 	
-	public void setHP(int hp)
+	public void setBP(int bp)
 	{
-		HP = hp;
+		BP = bp;
 	}
 	
-	public int getHP()
+	public int getBP()
 	{
-		return HP;
+		return BP;
+	}
+	
+	public void setGP(int gp)
+	{
+		GP = gp;
+	}
+	
+	public int getGP()
+	{
+		return GP;
 	}
 	
 	public void setPosition(Coord pos)
@@ -51,7 +61,7 @@ public class CharacterEntity {
 		return description;
 	}
 	
-	public CharacterEntity(FileHandle Filename)
+	/*public CharacterEntity(FileHandle Filename)
 	{
 		String data = Filename.readString();
 		String[] dataArr = data.split(",");
@@ -59,13 +69,14 @@ public class CharacterEntity {
 		setDescription(dataArr[1]);
 		setHP(Integer.parseInt(dataArr[2]));
 		setPosition(Coord.get(Integer.parseInt(dataArr[3]), Integer.parseInt(dataArr[4])));
-	}
-	public CharacterEntity(String[] dataArr)
+	}*/
+	public CharacterEntity(int GP, int BP)
 	{
-		setName(dataArr[0]);
-		setDescription(dataArr[1]);
-		setHP(Integer.parseInt(dataArr[2]));
-		setPosition(Coord.get(Integer.parseInt(dataArr[3]), Integer.parseInt(dataArr[4])));
+		//setName(dataArr[0]);
+		//setDescription(dataArr[1]);
+		setGP(GP);
+		setBP(BP);
+		//setPosition(Coord.get(Integer.parseInt(dataArr[3]), Integer.parseInt(dataArr[4])));
 	}
 	
 }
