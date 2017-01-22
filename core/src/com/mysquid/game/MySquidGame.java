@@ -587,7 +587,7 @@ public class MySquidGame extends ApplicationAdapter {
     }
     
     public void damageCreature() {
-    	System.out.println("Spell casted");
+    	DisplayMessage("Spell casted");
     	float diff = mWave.getDifference(realmWave);
     	
     	if (diff > 13) {
@@ -661,11 +661,7 @@ public class MySquidGame extends ApplicationAdapter {
     	{
     		System.out.println("You are hit");
     		playerEntity.setBP(playerEntity.getBP()-1);
-    		if (bottomText.get(5)!=null)
-    		{
-    			bottomText.remove(0);
-    		}
-    		bottomText.add("You are hit!");
+    		DisplayMessage("You are hit!");
     	}
     	if (playerEntity.getBP()<=0)
     	{
@@ -673,14 +669,18 @@ public class MySquidGame extends ApplicationAdapter {
     	}
     }
     
-    public void GameOver()
-    {
-    	System.out.println("You died, the Wave collapses, everything is terrible forever");
+    public void DisplayMessage(String msg) {
     	if (bottomText.get(5)!=null)
 		{
 			bottomText.remove(0);
 		}
-		bottomText.add("You died, the Wave collapses, everything is terrible forever");
+		bottomText.add(msg);    	
+    }
+    
+    public void GameOver()
+    {
+    	System.out.println("You died, the Wave collapses, everything is terrible forever");
+    	DisplayMessage("You died, the Wave collapses, everything is terrible forever");
 		
     }
 }
