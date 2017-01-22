@@ -30,7 +30,7 @@ public class Wave {
 		
 		for (int x=0; x<width; x++) {
 			int yPos = getYPos(waveValues[x], height);
-			out[x][yPos] = 'x';			
+			out[x][yPos] = '•';			
 		}
 		return out;					
 	}

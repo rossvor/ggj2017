@@ -49,7 +49,7 @@ public class MySquidGame extends ApplicationAdapter {
     private RNG rng;
     private SquidLayers display;
     private DungeonGenerator dungeonGen;
-    private char[][] decoDungeon, bareDungeon, lineDungeon, spaces, wv, realmDisplay;
+    private char[][] decoDungeon, bareDungeon, lineDungeon, spaces, mWaveDisplay, realmDisplay;
     private int[][] colorIndices, bgColorIndices, languageBG, languageFG, wvBG, wvFG;
     
     private Wave mWave;
@@ -255,7 +255,7 @@ public class MySquidGame extends ApplicationAdapter {
         realmWave = MapLoad.getRealmWave();
         realmDisplay = realmWave.getTextRepresentation(waveHeight, 30);
         
-        wv = mWave.getTextRepresentation(waveHeight, 30);
+        mWaveDisplay = mWave.getTextRepresentation(waveHeight, 30);
         wvBG = GwtCompatibility.fill2D(1, 30, waveHeight);
         wvFG = GwtCompatibility.fill2D(0, 30, waveHeight);
 
@@ -508,7 +508,7 @@ public class MySquidGame extends ApplicationAdapter {
         display.put(gridWidth, 0, realmDisplay, wvFG, wvBG);
         
      // put the realm wave
-        display.put(gridWidth, 13, wv, wvFG, wvBG);
+        display.put(gridWidth, 13, mWaveDisplay, wvFG, wvBG);
         
         float difference = mWave.getDifference(realmWave);
         String diff = "Diff: " + difference;
@@ -527,7 +527,7 @@ public class MySquidGame extends ApplicationAdapter {
 
     	if (sigilWaves.size() > sigilIndex) {
         	mWave.applyWave(sigilWaves.get(sigilIndex), intensity);
-        	wv = mWave.getTextRepresentation(waveHeight, 30);    		
+        	mWaveDisplay = mWave.getTextRepresentation(waveHeight, 30);    		
     	}
 
 
@@ -612,6 +612,15 @@ public class MySquidGame extends ApplicationAdapter {
         lineDungeon = DungeonUtility.hashesToLines(decoDungeon);
         player = MapLoad.getPlayerStart();
         creature = MapLoad.getCreatureStart();
+        
+        // Set new realm wave
+        realmWave = MapLoad.getRealmWave();
+        realmDisplay = realmWave.getTextRepresentation(waveHeight, 30);
+        
+        //Reset enemy wave
+        mWave = new Wave();
+        mWaveDisplay = mWave.getTextRepresentation(waveHeight, 30);
+        
         playerToCursor = new DijkstraMap(decoDungeon, DijkstraMap.Measurement.MANHATTAN);
         creatureToPlayer = new DijkstraMap(decoDungeon, DijkstraMap.Measurement.MANHATTAN);
         creatureEntity = new CharacterEntity(10,10);
