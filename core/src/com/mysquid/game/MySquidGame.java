@@ -224,18 +224,6 @@ public class MySquidGame extends ApplicationAdapter {
         
         waveHeight = 12;
         
-        /*
-        float[] waveValues = {
-        		-0.2f, 0f, 0f, 0.3f, 0.4f, 0.6f, 0.2f, 0f, -0.4f, -0.3f,
-        		-0.2f, 0f, 0f, 0.3f, 0.4f, 0.6f, 0.2f, 0f, -0.4f, -0.3f,
-        		-0.2f, 0f, 0f, 0.3f, 0.4f, 0.6f, 0.2f, 0f, -0.4f, -0.3f
-        };*/
-        float[] waveValues = {
-        		0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f,
-        		1f,0.9f,0.8f,0.7f,0.6f,0.5f,0.4f,0.3f,0.2f,0.1f,
-        		0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f
-        };
-        
         mWave = new Wave();
         
         sigilWaves = new ArrayList();
@@ -253,13 +241,6 @@ public class MySquidGame extends ApplicationAdapter {
         		0f,0f,0f,0f,0f,0f,0f,0f,0f,0f
         };
         sigilWaves.add(new Wave(sigil2WaveValues));
-        
-        
-        float[] realmValues = {
-        		0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f,
-        		1f,0.9f,0.8f,0.7f,0.6f,0.5f,0.4f,0.3f,0.2f,0.1f,
-        		0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f
-        };
         
         realmWave = MapLoad.getRealmWave();
         realmDisplay = realmWave.getTextRepresentation(waveHeight, 30);
@@ -386,7 +367,7 @@ public class MySquidGame extends ApplicationAdapter {
                     case 'c':
                     	castSigil(2, 0.6f);
                     	break;
-                    case 'v':
+                    case SquidInput.ENTER:
                     	damageCreature();
                     	break;
                     case '/':
