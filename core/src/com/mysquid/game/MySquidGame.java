@@ -571,14 +571,25 @@ public class MySquidGame extends ApplicationAdapter {
     	DisplayMessage("Spell casted");
     	float diff = mWave.getDifference(realmWave);
     	
-    	if (diff > 13) {
-    		
-    		float damage = diff * 0.3f;
+    	int threshold = 13;
+    	
+    	if (diff > threshold) {
+    		// normalize damage
+    		float normDamage = (diff-0)/(30-0);
+    		// apply multiplier and round
+    		float damage = (float) Math.ceil(normDamage * 5);
+    		//System.out.println("Bad damage: "+ damage);
+    		DisplayMessage("Bad damage: "+ damage);
+    		//float damage = diff * 0.3f;
     		creatureEntity.setBP(creatureEntity.getBP() - damage);
     	}
     	else {
-    		float damage = 10 - (diff * 0.3f);
-    		System.out.println("GP dmg" + damage);
+    		// normalize damage
+    		float normDamage = (diff-0)/(threshold-0);
+    		// invert, apply multiplier and round
+    		float damage = (float) Math.ceil((1 - normDamage) * 15);
+    		System.out.println("Good damage: " + damage);
+    		DisplayMessage("Good damage: " + damage);
     		creatureEntity.setGP(creatureEntity.getGP() - damage);    		
     	}
     	
