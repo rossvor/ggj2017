@@ -525,7 +525,7 @@ public class MySquidGame extends ApplicationAdapter {
         
         for (int i = 0; i < 6; i++) {
             display.putString(1, gridHeight + i + 1,bottomText.get(i),0,1);
-            System.out.println(bottomText.get(0));
+           // System.out.println(bottomText.get(0));
 
         }
         //display.putString(1, gridHeight + 1,MapLoad.getDescription(),0,1);
@@ -604,9 +604,18 @@ public class MySquidGame extends ApplicationAdapter {
     	System.out.println("BP: " + creatureEntity.getBP() + "; GP: " + creatureEntity.getGP());
     	
     	if (creatureEntity.getBP()< 0)
+    	{
     		System.out.println("Creature is dead!");
+    		playerEntity.setKarma(playerEntity.getKarma()-1);
+    		isItOver();
+    	}
+    	
     	if (creatureEntity.getGP()< 0)
+    	{
     		System.out.println("Creature is saved!");
+    		playerEntity.setKarma(playerEntity.getKarma()+1);
+    		isItOver();
+    	}
     	
     }
 
@@ -651,7 +660,7 @@ public class MySquidGame extends ApplicationAdapter {
         System.out.println(MapLoad.getDescription());
         for (int i = 0; i < 6; i++) {
             display.putString(1, gridHeight + i + 1,bottomText.get(i),0,1);
-            System.out.println(bottomText.get(0));
+            //System.out.println(bottomText.get(0));
         }
     }
     
@@ -675,12 +684,28 @@ public class MySquidGame extends ApplicationAdapter {
     
     public void GameOver()
     {
-    	System.out.println("You died, the Wave collapses, everything is terrible forever");
-    	if (bottomText.get(5)!=null)
+    	NewMap("Dead.csv");    	
+    }
+    
+    public void GameWin()
+    {
+    	if (playerEntity.getKarma()>5)
 		{
-			bottomText.remove(0);
+			NewMap("GoodEnding.csv");
+		}else
+		{
+			NewMap("BadEnding.csv");
 		}
-		bottomText.add("You died, the Wave collapses, everything is terrible forever");
-		
+    }
+    
+    public void isItOver()
+    {
+    	if (NextMap.equals("END"))
+    	{
+    		GameWin();
+    	}else
+    	{
+    		NewMap(NextMap);
+    	}
     }
 }
