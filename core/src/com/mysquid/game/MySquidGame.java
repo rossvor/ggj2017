@@ -55,6 +55,8 @@ public class MySquidGame extends ApplicationAdapter {
     private Wave mWave;
     private Wave realmWave;
     
+    private int castCounter;
+    
     private List<Wave> sigilWaves;
     /** In number of cells */
     private int gridWidth;
@@ -92,6 +94,7 @@ public class MySquidGame extends ApplicationAdapter {
     	bottomText.add("Line 5");
     	bottomText.add("Line 6");
     	
+    	castCounter = 0;
         //These variables, corresponding to the screen's width and height in cells and a cell's width and height in
         //pixels, must match the size you specified in the launcher for input to behave.
         //This is one of the more common places a mistake can happen.
@@ -527,7 +530,16 @@ public class MySquidGame extends ApplicationAdapter {
 
     	if (sigilWaves.size() > sigilIndex) {
         	mWave.applyWave(sigilWaves.get(sigilIndex), intensity);
-        	mWaveDisplay = mWave.getTextRepresentation(waveHeight, 30);    		
+        	mWaveDisplay = mWave.getTextRepresentation(waveHeight, 30);
+        	
+        	if(castCounter > 2){
+        		move(0,0);
+        		castCounter = 0;
+        	}
+        	else {
+        		castCounter++;
+        	}
+        	
     	}
 
 
