@@ -87,12 +87,12 @@ public class MySquidGame extends ApplicationAdapter {
     	playerEntity = new PlayerCharacterEntity(10,10);
     	creatureEntity = new CharacterEntity(10,10);
     	bottomText = new ArrayList<String>(6);
-    	bottomText.add("Line 1");
+    	/*bottomText.add("Line 1");
     	bottomText.add("Line 2");
     	bottomText.add("Line 3");
     	bottomText.add("Line 4");
     	bottomText.add("Line 5");
-    	bottomText.add("Line 6");
+    	bottomText.add("Line 6");*/
     	
     	castCounter = 0;
         //These variables, corresponding to the screen's width and height in cells and a cell's width and height in
@@ -163,6 +163,12 @@ public class MySquidGame extends ApplicationAdapter {
         MapLoad =  new MapLoader();
         decoDungeon = MapLoad.LoadMap(Gdx.files.internal(NextMap));
         NextMap = MapLoad.getNextMap();
+        //System.out.println(MapLoad.getDescription());
+        String[] descriptionLines = MapLoad.getDescription().split("#");
+        for (int x =0;x<6;x++)
+        {
+        	bottomText.add(descriptionLines[x]);
+        }
         //There are lots of options for dungeon generation in SquidLib; you can pass a TilesetType enum to generate()
         //as shown on the following lines to change the style of dungeon generated from ruined areas, which are made
         //when no argument is passed to generate or when TilesetType.DEFAULT_DUNGEON is, to caves or other styles.
@@ -636,6 +642,17 @@ public class MySquidGame extends ApplicationAdapter {
         playerToCursor = new DijkstraMap(decoDungeon, DijkstraMap.Measurement.MANHATTAN);
         creatureToPlayer = new DijkstraMap(decoDungeon, DijkstraMap.Measurement.MANHATTAN);
         creatureEntity = new CharacterEntity(10,10);
+        bottomText.clear();
+        String[] descriptionLines = MapLoad.getDescription().split("#");
+        for (int x =0;x<6;x++)
+        {
+        	bottomText.add(descriptionLines[x]);
+        }
+        System.out.println(MapLoad.getDescription());
+        for (int i = 0; i < 6; i++) {
+            display.putString(1, gridHeight + i + 1,bottomText.get(i),0,1);
+            System.out.println(bottomText.get(0));
+        }
     }
     
     public void AmIHit()
