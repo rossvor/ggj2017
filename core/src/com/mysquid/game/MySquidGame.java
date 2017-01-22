@@ -245,6 +245,13 @@ public class MySquidGame extends ApplicationAdapter {
         };
         sigilWaves.add(new Wave(sigil2WaveValues));
         
+        float[] sigil3WaveValues = {
+        		0f,0f,0f,0f,0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0f,
+        		0.05f,0.1f,0.2f,0.3f,0.5f,0.7f,0.85f,0.9f,0.9f,0.85f,0.7f,
+        		0.5f,0.3f,0.2f,0.1f,0.05f
+        };
+        sigilWaves.add(new Wave(sigil3WaveValues, 0, 15));
+        
         realmWave = MapLoad.getRealmWave();
         realmDisplay = realmWave.getTextRepresentation(waveHeight, 30);
         
@@ -348,32 +355,59 @@ public class MySquidGame extends ApplicationAdapter {
                     		Gdx.app.exit();
                     		break;
                     	}
-                    	case 'q':
+                        case 'q':
                     		castSigil(0, 0.2f);
                     		break;
                     	case 'w':
-                    		castSigil(0, 0.4f);
-                    		break;
-                    	case 'e':
                     		castSigil(0, 0.6f);
                     		break;
-                    	case 'a':
+                        case 'a':
                     		castSigil(1, 0.2f);
                     		break;
                     	case 's':
-                    		castSigil(1, 0.4f);
-                    		break;
-                    	case 'd':
                     		castSigil(1, 0.6f);
                     		break;
-                    	case 'z':
+                        case 'z':
                     		castSigil(2, 0.2f);
                     		break;
                     	case 'x':
-                    		castSigil(2, 0.4f);
-                    		break;
-                    	case 'c':
                     		castSigil(2, 0.6f);
+                    		break;
+                        case 'e':
+                    		castSigil(3, 0.2f);
+                    		break;
+                    	case 'r':
+                    		castSigil(3, 0.6f);
+                    		break;
+                        case 'd':
+                    		castSigil(4, 0.2f);
+                    		break;
+                    	case 'f':
+                    		castSigil(4, 0.6f);
+                    		break;
+                        case 'c':
+                    		castSigil(5, 0.2f);
+                    		break;
+                    	case 'v':
+                    		castSigil(5, 0.6f);
+                    		break;
+                        case 't':
+                    		castSigil(6, 0.2f);
+                    		break;
+                    	case 'y':
+                    		castSigil(6, 0.6f);
+                    		break;
+                        case 'g':
+                    		castSigil(7, 0.2f);
+                    		break;
+                    	case 'h':
+                    		castSigil(7, 0.6f);
+                    		break;
+                        case 'b':
+                    		castSigil(8, 0.2f);
+                    		break;
+                    	case 'n':
+                    		castSigil(8, 0.6f);
                     		break;
                     	case SquidInput.ENTER:
                     		damageCreature();
@@ -532,7 +566,7 @@ public class MySquidGame extends ApplicationAdapter {
         	mWave.applyWave(sigilWaves.get(sigilIndex), intensity);
         	mWaveDisplay = mWave.getTextRepresentation(waveHeight, 30);
         	
-        	if(castCounter > 1){
+        	if(castCounter >= 0){
         		move(0,0);
         		castCounter = 0;
         	}

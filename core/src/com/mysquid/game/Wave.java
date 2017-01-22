@@ -8,6 +8,9 @@ public class Wave {
 	
 	public float[] waveValues;
 	
+	private int deadzoneStart;
+	private int deadzoneEnd;
+	
 	public Wave () {
 		
 		int xValueCount = 30;
@@ -16,12 +19,23 @@ public class Wave {
 		waveValues = new float[xValueCount];
 		Arrays.fill(waveValues, 0f);
 		
+		deadzoneStart = 30;
+		deadzoneEnd = 30;
+		
 	}
 	
 	public Wave (float[] waveValues) {
 		
 		this.waveValues = waveValues;
+		this.deadzoneStart = 30;
+		this.deadzoneEnd = 30;		
+	}
+	
+	public Wave (float[] waveValues, int deadzoneStart, int deadzoneEnd) {
 		
+		this.waveValues = waveValues;
+		this.deadzoneStart = deadzoneStart;
+		this.deadzoneEnd = deadzoneEnd;		
 	}
 	
 	public char[][] getTextRepresentation(int height, int width) {
@@ -62,12 +76,23 @@ public class Wave {
 		
 		for (int i=0; i<waveValues.length;i++) {
 			
-			float diff = waveValues[i] - waveToApply.waveValues[i];
-			//waveValues[i] = clamp(waveValues[i] - (diff * intensity), -1f, 1f);
-			waveValues[i] = waveValues[i] - (diff * intensity);	
+			if (waveToApply.inDeadZone(i) == false) {
+				float diff = waveValues[i] - waveToApply.waveValues[i];
+				//waveValues[i] = clamp(waveValues[i] - (diff * intensity), -1f, 1f);
+				waveValues[i] = waveValues[i] - (diff * intensity);					
+			}
 			
 		}
 		
+	}
+	
+	private boolean inDeadZone(int i) {
+		if (i > deadzoneStart && i < deadzoneEnd) {
+			
+			return true;
+		}
+		else
+			return false;
 	}
 	
 	public float getDifference(Wave other) {
