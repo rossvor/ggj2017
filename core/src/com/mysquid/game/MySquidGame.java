@@ -82,6 +82,7 @@ public class MySquidGame extends ApplicationAdapter {
     private String NextMap ="Map0.csv";
     private MapLoader MapLoad;
     private ArrayList<String> bottomText;
+    private boolean done;
     @Override
     public void create () {
     	playerEntity = new PlayerCharacterEntity(10,10);
@@ -93,7 +94,7 @@ public class MySquidGame extends ApplicationAdapter {
     	bottomText.add("Line 4");
     	bottomText.add("Line 5");
     	bottomText.add("Line 6");*/
-    	
+    	done = false;
     	castCounter = 0;
         //These variables, corresponding to the screen's width and height in cells and a cell's width and height in
         //pixels, must match the size you specified in the launcher for input to behave.
@@ -119,6 +120,7 @@ public class MySquidGame extends ApplicationAdapter {
         cellHeight = 22;
         // gotta have a random number generator. We can seed an RNG with any long we want, or even a String.
         rng = new RNG("SquidLib!");
+        
 
         //Some classes in SquidLib need access to a batch to render certain things, so it's a good idea to have one.
         batch = new SpriteBatch();
@@ -206,6 +208,7 @@ public class MySquidGame extends ApplicationAdapter {
         //DijkstraMap is the pathfinding swiss-army knife we use here to find a path to the latest cursor position.
         playerToCursor = new DijkstraMap(decoDungeon, DijkstraMap.Measurement.MANHATTAN);
         creatureToPlayer = new DijkstraMap(decoDungeon, DijkstraMap.Measurement.MANHATTAN);
+   
         bgColor = SColor.DARK_SLATE_GRAY;
         // DungeonUtility provides various ways to get default colors or other information from a dungeon char 2D array.
         colorIndices = DungeonUtility.generatePaletteIndices(decoDungeon);
@@ -330,68 +333,74 @@ public class MySquidGame extends ApplicationAdapter {
         input = new SquidInput(new SquidInput.KeyHandler() {
             @Override
             public void handle(char key, boolean alt, boolean ctrl, boolean shift) {
-                switch (key)
-                {
-                    case SquidInput.UP_ARROW:
-                    {
-                        //-1 is up on the screen
-                        move(0, -1);
-                        break;
-                    }
-                    case SquidInput.DOWN_ARROW:
-                    {
-                        //+1 is down on the screen
-                        move(0, 1);
-                        break;
-                    }
-                    case SquidInput.LEFT_ARROW:
-                    {
-                        move(-1, 0);
-                        break;
-                    }
-                    case SquidInput.RIGHT_ARROW:
-                    {
-                        move(1, 0);
-                        break;
-                    }
-                    case SquidInput.ESCAPE:
-                    {
-                        Gdx.app.exit();
-                        break;
-                    }
-                    case 'q':
-                    	castSigil(0, 0.2f);
-                    	break;
-                    case 'w':
-                    	castSigil(0, 0.4f);
-                    	break;
-                    case 'e':
-                    	castSigil(0, 0.6f);
-                    	break;
-                    case 'a':
-                    	castSigil(1, 0.2f);
-                    	break;
-                    case 's':
-                    	castSigil(1, 0.4f);
-                    	break;
-                    case 'd':
-                    	castSigil(1, 0.6f);
-                    	break;
-                    case 'z':
-                    	castSigil(2, 0.2f);
-                    	break;
-                    case 'x':
-                    	castSigil(2, 0.4f);
-                    	break;
-                    case 'c':
-                    	castSigil(2, 0.6f);
-                    	break;
-                    case 'v':
-                    	damageCreature();
-                    	break;
-                    case '/':
-                    	NewMap(NextMap);
-                    	break;
+            	if (done)
+            	{
+            		isItOver();        		
+            	}else
+            	{
+            		switch (key)
+            		{
+                    	case SquidInput.UP_ARROW:
+                    	{
+                    		//-1 is up on the screen
+                    		move(0, -1);
+                    		break;
+                    	}
+                    	case SquidInput.DOWN_ARROW:
+                    	{
+                    		//+1 is down on the screen
+                    		move(0, 1);
+                    		break;
+                    	}
+                    	case SquidInput.LEFT_ARROW:
+                    	{
+                    		move(-1, 0);
+                    		break;
+                    	}
+                    	case SquidInput.RIGHT_ARROW:
+                    	{
+                    		move(1, 0);
+                    		break;
+                    	}
+                    	case SquidInput.ESCAPE:
+                    	{
+                    		Gdx.app.exit();
+                    		break;
+                    	}
+                    	case 'q':
+                    		castSigil(0, 0.2f);
+                    		break;
+                    	case 'w':
+                    		castSigil(0, 0.4f);
+                    		break;
+                    	case 'e':
+                    		castSigil(0, 0.6f);
+                    		break;
+                    	case 'a':
+                    		castSigil(1, 0.2f);
+                    		break;
+                    	case 's':
+                    		castSigil(1, 0.4f);
+                    		break;
+                    	case 'd':
+                    		castSigil(1, 0.6f);
+                    		break;
+                    	case 'z':
+                    		castSigil(2, 0.2f);
+                    		break;
+                    	case 'x':
+                    		castSigil(2, 0.4f);
+                    		break;
+                    	case 'c':
+                    		castSigil(2, 0.6f);
+                    		break;
+                    	case 'v':
+                    		damageCreature();
+                    		break;
+                    	case '/':
+                    		NewMap(NextMap);
+                    	  	break;
+            		}
                 }
             }
         },
@@ -403,7 +412,7 @@ public class MySquidGame extends ApplicationAdapter {
 
             // if the user clicks and there are no awaitedMoves queued up, generate toCursor if it
             // hasn't been generated already by mouseMoved, then copy it over to awaitedMoves.
-            @Override
+           /* @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 if(awaitedMoves.isEmpty()) {
                     if (toCursor.isEmpty()) {
@@ -415,16 +424,16 @@ public class MySquidGame extends ApplicationAdapter {
                     awaitedMoves = new ArrayList<Coord>(toCursor);
                 }
                 return false;
-            }
+            }*/
 
-            @Override
+           /* @Override
             public boolean touchDragged(int screenX, int screenY, int pointer) {
                 return mouseMoved(screenX, screenY);
-            }
+            }*/
 
             // causes the path to the mouse position to become highlighted (toCursor contains a list of points that
             // receive highlighting). Uses DijkstraMap.findPath() to find the path, which is surprisingly fast.
-            @Override
+           /* @Override
             public boolean mouseMoved(int screenX, int screenY) {
                 if(!awaitedMoves.isEmpty())
                     return false;
@@ -435,7 +444,7 @@ public class MySquidGame extends ApplicationAdapter {
                 cursor = Coord.get(screenX, screenY);
                 toCursor = playerToCursor.findPath(100, null, null, player, cursor);
                 return false;
-            }
+            }*/
         }));
         //Setting the InputProcessor is ABSOLUTELY NEEDED TO HANDLE INPUT
         Gdx.input.setInputProcessor(new InputMultiplexer(stage, input));
@@ -453,28 +462,30 @@ public class MySquidGame extends ApplicationAdapter {
      */
     private void move(int xmod, int ymod) {
     	AmIHit();
-        int newX = player.x + xmod, newY = player.y + ymod;
-        if (newX >= 0 && newY >= 0 && newX < gridWidth && newY < gridHeight
-                && bareDungeon[newX][newY] != '#'
-                && Coord.get(newX, newY)!=creature)
-        {
-            player = player.translate(xmod, ymod);
-        }
+    	int newX = player.x + xmod, newY = player.y + ymod;
+    	if (newX >= 0 && newY >= 0 && newX < gridWidth && newY < gridHeight
+    			&& bareDungeon[newX][newY] != '#'
+    			&& Coord.get(newX, newY)!=creature)
+    	{
+    		player = player.translate(xmod, ymod);
+    	}
+    	
         // loops through the text snippets displayed whenever the player moves
         //langIndex = (langIndex + 1) % lang.length;
         
-        //Creature Turn
-        ToPlayerCreature = creatureToPlayer.findPath(100, null, null, creature, player);
+    	//Creature Turn
+    	ToPlayerCreature = creatureToPlayer.findPath(100, null, null, creature, player);
         
-        awaitedMovesCreature = new ArrayList<Coord>(ToPlayerCreature);
-        if (awaitedMovesCreature.size()>0)
-        {
-        	Coord mC = awaitedMovesCreature.remove(0);
-        	if (mC != player)
-        	{
-        		creature = mC;
-        	}
-        }
+    	awaitedMovesCreature = new ArrayList<Coord>(ToPlayerCreature);
+    	if (awaitedMovesCreature.size()>0)
+    	{
+    		Coord mC = awaitedMovesCreature.remove(0);
+    		if (mC != player)
+    		{
+    			creature = mC;
+    		}
+    	}
+    	
         //int newXC = creature.x + mC.x, newYC = creature.y + mC.y;
         //if (newXC >= 0 && newYC >= 0 && newXC < gridWidth && newYC < gridHeight
         //        && bareDungeon[newXC][newYC] != '#')
@@ -587,34 +598,40 @@ public class MySquidGame extends ApplicationAdapter {
     }
     
     public void damageCreature() {
-    	DisplayMessage("Spell casted");
+    	
     	float diff = mWave.getDifference(realmWave);
     	
     	if (diff > 13) {
     		
     		float damage = diff * 0.3f;
     		creatureEntity.setBP(creatureEntity.getBP() - damage);
+    		DisplayMessage("You howl discordantly, tearing at the creature's identity");
     	}
     	else {
     		float damage = 10 - (diff * 0.3f);
     		System.out.println("GP dmg" + damage);
-    		creatureEntity.setGP(creatureEntity.getGP() - damage);    		
+    		creatureEntity.setGP(creatureEntity.getGP() - damage);
+    		DisplayMessage("You guide the creature closer to Harmony");
     	}
     	
     	System.out.println("BP: " + creatureEntity.getBP() + "; GP: " + creatureEntity.getGP());
     	
     	if (creatureEntity.getBP()< 0)
     	{
-    		System.out.println("Creature is dead!");
+    		DisplayMessage("You have Silenced the creature forever");
+    		DisplayMessage("Press any key to continue");
+    		done = true;
     		playerEntity.setKarma(playerEntity.getKarma()-1);
-    		isItOver();
+    		//isItOver();
     	}
     	
     	if (creatureEntity.getGP()< 0)
     	{
-    		System.out.println("Creature is saved!");
+    		DisplayMessage("You have Restored the creature to Harmony");
+    		DisplayMessage("Press any key to continue");
+    		done = true;
     		playerEntity.setKarma(playerEntity.getKarma()+1);
-    		isItOver();
+    		//isItOver();
     	}
     	
     }
@@ -632,6 +649,7 @@ public class MySquidGame extends ApplicationAdapter {
     
     public void NewMap(String mapName)
     {
+    	done = false;
     	MapLoad =  new MapLoader();
         decoDungeon = MapLoad.LoadMap(Gdx.files.internal(mapName));
         NextMap = MapLoad.getNextMap();
