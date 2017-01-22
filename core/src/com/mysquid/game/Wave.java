@@ -11,6 +11,9 @@ public class Wave {
 	private int deadzoneStart;
 	private int deadzoneEnd;
 	
+	private int deadzone2Start;
+	private int deadzone2End;
+	
 	public Wave () {
 		
 		int xValueCount = 30;
@@ -21,6 +24,8 @@ public class Wave {
 		
 		deadzoneStart = 30;
 		deadzoneEnd = 30;
+		this.deadzone2Start = 30;
+		this.deadzone2End = 30;
 		
 	}
 	
@@ -28,15 +33,29 @@ public class Wave {
 		
 		this.waveValues = waveValues;
 		this.deadzoneStart = 30;
-		this.deadzoneEnd = 30;		
+		this.deadzoneEnd = 30;
+		this.deadzone2Start = 30;
+		this.deadzone2End = 30;
 	}
 	
 	public Wave (float[] waveValues, int deadzoneStart, int deadzoneEnd) {
 		
 		this.waveValues = waveValues;
 		this.deadzoneStart = deadzoneStart;
-		this.deadzoneEnd = deadzoneEnd;		
+		this.deadzoneEnd = deadzoneEnd;
+		this.deadzone2Start = 30;
+		this.deadzone2End = 30;
 	}
+	
+	public Wave (float[] waveValues, int deadzoneStart, int deadzoneEnd, int deadzone2Start, int deadzone2End) {
+		
+		this.waveValues = waveValues;
+		this.deadzoneStart = deadzoneStart;
+		this.deadzoneEnd = deadzoneEnd;
+		this.deadzone2Start = deadzone2Start;
+		this.deadzone2End = deadzone2End;
+	}
+	
 	
 	public char[][] getTextRepresentation(int height, int width) {
 		
@@ -76,18 +95,23 @@ public class Wave {
 		
 		for (int i=0; i<waveValues.length;i++) {
 			
-			if (waveToApply.inDeadZone(i) == false) {
-				float diff = waveValues[i] - waveToApply.waveValues[i];
-				//waveValues[i] = clamp(waveValues[i] - (diff * intensity), -1f, 1f);
-				waveValues[i] = waveValues[i] - (diff * intensity);					
+			float deadzoneMultiplier = 1f;
+			if (waveToApply.inDeadZone(i)) {
+				deadzoneMultiplier = 0.35f;
+				
 			}
+			float diff = waveValues[i] - waveToApply.waveValues[i];
+			//waveValues[i] = clamp(waveValues[i] - (diff * intensity), -1f, 1f);
+			waveValues[i] = waveValues[i] - (diff * intensity * deadzoneMultiplier);					
+			
 			
 		}
 		
 	}
 	
 	private boolean inDeadZone(int i) {
-		if (i > deadzoneStart && i < deadzoneEnd) {
+		if ((i > deadzoneStart && i < deadzoneEnd) ||
+				(i > deadzone2Start && i < deadzone2End)) {
 			
 			return true;
 		}

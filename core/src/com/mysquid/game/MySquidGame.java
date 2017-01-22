@@ -231,26 +231,66 @@ public class MySquidGame extends ApplicationAdapter {
         
         sigilWaves = new ArrayList();
         float[] sigilWaveValues = {
-        		0f,0f,0f,-0.1f,-0.2f,-0.3f,-0.4f,-0.5f,-0.6f,-0.7f,
-        		-0.8f,-0.9f,-0.8f,-0.7f,-0.6f,0f,0f,0f,0f,0f,
-        		0f,0f,0f,0f,0f,0f,0f,0f,0f,0f
-        };
-        Wave sigilWave = new Wave(sigilWaveValues);        
+        		0.05f,0.15f,0.3f,0.5f,0.75f,0.85f,0.95f,0.85f,0.75f,0.5f,0.3f,0.15f,0.05f,
+        		0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f
+        		};
+        Wave sigilWave = new Wave(sigilWaveValues, 15, 30);        
         sigilWaves.add(sigilWave);
         
         float[] sigil2WaveValues = {
-        		0f,0f,0f,0f,0f,0.2f,0.3f,0.4f,0.5f,0.5f,
-        		0.4f,0.3f,0.2f,0f,0f,0f,0f,0f,0f,0f,
-        		0f,0f,0f,0f,0f,0f,0f,0f,0f,0f
+        		-0.05f,-0.15f,-0.3f,-0.5f,-0.75f,-0.85f,-0.95f,-0.85f,-0.75f,-0.5f,-0.3f,-0.15f,-0.05f,
+        		0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f
         };
-        sigilWaves.add(new Wave(sigil2WaveValues));
+        sigilWaves.add(new Wave(sigil2WaveValues, 15, 30));
         
         float[] sigil3WaveValues = {
-        		0f,0f,0f,0f,0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0f,
-        		0.05f,0.1f,0.2f,0.3f,0.5f,0.7f,0.85f,0.9f,0.9f,0.85f,0.7f,
-        		0.5f,0.3f,0.2f,0.1f,0.05f
+        		0.0f, 0.033f, 0.066f, 0.099f, 0.133f, 0.166f, 0.199f, 0.233f, 0.266f, 0.299f, 0.333f, 0.366f, 0.399f, 0.433f, 0.466f, 0.499f, 0.533f, 0.566f, 0.599f, 0.633f, 0.666f, 0.699f, 0.733f, 0.766f, 0.799f, 0.833f, 0.866f, 0.899f, 0.933f, 0.966f
         };
-        sigilWaves.add(new Wave(sigil3WaveValues, 0, 15));
+        sigilWaves.add(new Wave(sigil3WaveValues));
+        
+        float[] sigil4WaveValues = {
+        		0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,
+        		0.05f,0.15f,0.3f,0.5f,0.75f,0.85f,0.95f,0.85f,0.75f,0.5f,0.3f,0.15f,0.05f,
+        		0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f
+        		};
+        sigilWave = new Wave(sigil4WaveValues, 0, 7, 22, 30);        
+        sigilWaves.add(sigilWave);
+        
+        float[] sigil5WaveValues = {
+        		0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,
+        		-0.05f,-0.15f,-0.3f,-0.5f,-0.75f,-0.85f,-0.95f,-0.85f,-0.75f,-0.5f,-0.3f,-0.15f,-0.05f,
+        		0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f
+        		};
+        sigilWave = new Wave(sigil5WaveValues, 0, 7, 22, 30);        
+        sigilWaves.add(sigilWave);
+        
+        
+        float[] sigil6WaveValues = new float[30];        		
+        Arrays.fill(sigil6WaveValues, 0f);; 
+        		
+        sigilWaves.add(new Wave(sigil6WaveValues));
+        
+        float[] sigil7WaveValues = {
+        		0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,
+        		0.05f,0.15f,0.3f,0.5f,0.75f,0.85f,0.95f,0.85f,0.75f,0.5f,0.3f,0.15f,0.05f
+        		};
+        sigilWave = new Wave(sigil7WaveValues, 0, 15);        
+        sigilWaves.add(sigilWave);
+        
+        float[] sigil8WaveValues = {
+        		0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f
+        		-0.05f,-0.15f,-0.3f,-0.5f,-0.75f,-0.85f,-0.95f,-0.85f,-0.75f,-0.5f,-0.3f,-0.15f,-0.05f
+        		};
+        sigilWave = new Wave(sigil8WaveValues, 0, 15);        
+        sigilWaves.add(sigilWave);
+        
+        float[] sigil9WaveValues = {
+        		-0.0f, -0.033f, -0.066f, -0.099f, -0.133f, -0.166f, -0.199f, -0.233f, -0.266f, -0.299f, -0.333f, -0.366f, -0.399f, -0.433f, -0.466f, -0.499f, -0.533f, -0.566f, -0.599f, -0.633f, -0.666f, -0.699f, -0.733f, -0.766f, -0.799f, -0.833f, -0.866f, -0.899f, -0.933f, -0.966f
+        		};
+        sigilWave = new Wave(sigil9WaveValues, 0, 15);        
+        sigilWaves.add(sigilWave);
+        
+        
         
         realmWave = MapLoad.getRealmWave();
         realmDisplay = realmWave.getTextRepresentation(waveHeight, 30);
